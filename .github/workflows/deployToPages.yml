@@ -16,7 +16,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.github_pages.outputs.url }}
+      url: ${{ steps.deployment.outputs.page_url }}   # 👈 CORREGIDO
     runs-on: ubuntu-latest
     steps:
       - name: Clonar Repositorio
@@ -38,6 +38,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: './dist'
-      - name: Publicar Githu Pages
+      - name: Publicar Github Pages
         id: deployment
         uses: actions/deploy-pages@v4
