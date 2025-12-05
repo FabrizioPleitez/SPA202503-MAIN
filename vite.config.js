@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  plugins: [react()],
-  base: '/SPA202503-MAIN/',  // 👈 ESTO ES LO IMPORTANTE
+  plugins: [react(), tailwindcss()],
+  base: '/SPA202503-MAIN/',
 })
