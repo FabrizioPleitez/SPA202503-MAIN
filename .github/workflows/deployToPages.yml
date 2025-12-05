@@ -1,0 +1,43 @@
+name: Desplegar React SPA a Github Pages
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+env:
+  DEPLOY_BASE_URL: ${{vars.DEPLOY_BASE_URL}}
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.github_pages.outputs.url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clonar Repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Instalar Dependencias del Proyecto
+        run: npm install
+      - name: Compilar el Proyecto
+        run: npm run build
+      - name: Configurar 404 Pages
+        run: cp ./dist/index.html ./dist/404.html
+      - name: Configurar Github pages
+        uses: actions/configure-pages@v5
+      - name: Subir artefactos a Github Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+      - name: Publicar Githu Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
